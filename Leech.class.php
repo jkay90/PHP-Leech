@@ -6,7 +6,6 @@
  * 
  * @author		Jeyanth Kumar
  * @copyright	02-07-12
- * @package 	SPV-Framework
  */
 
 /** 
@@ -27,10 +26,9 @@
  * $leech_obj->setpost($post);
  * $result = $leech_obj->leech();
  * </code>
+ * 
  * @author		Jeyanth Kumar
  * @copyright	02-07-12
- * @package 	SPV-Framework
- * @subpackage	library
  */
 class Leech {
 	
