@@ -89,6 +89,13 @@ class Leech {
 	private $cookie_file;
 	
 	/**
+	 * HTTP Response Code
+	 * 
+	 * @var Integer
+	 */
+	private $responsecode;
+	
+	/**
 	 * Flag - random UA
 	 * 
 	 * @const 0
@@ -463,6 +470,23 @@ class Leech {
 	}
 	
 	/**
+	 * Getting Response Code
+	 *  
+	 * get_response_code will return the response code from the server. This
+	 * method should be called after leech();
+	 * 
+	 * <code>
+	 * $output = $leech_obj->leech();
+	 * $response_code = $leech_obj->get_response_code();
+	 * </code>
+	 * 
+	 * @return Integer HTTP Response code
+	 */
+	public function get_response_code() {
+		return $this->responsecode;
+	}
+	
+	/**
 	 * Leech
 	 * 
 	 * After setting up the URL throught constructor or method call leech to
@@ -513,9 +537,9 @@ class Leech {
 		}
 		
 		curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
-		
         curl_setopt ($ch, CURLOPT_RETURNTRANSFER, true);
         $rawhtml = curl_exec($ch);
+        $this->responsecode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         
         return $rawhtml;
