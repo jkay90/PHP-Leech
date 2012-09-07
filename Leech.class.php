@@ -208,13 +208,13 @@ class Leech {
 	 * 
 	 * Use seturl to set the url to the leech class to leech the data. 
 	 * <code>
-	 * $leech_obj->seturl("http://www.example.com/page.php");
+	 * $leech_obj->set_url("http://www.example.com/page.php");
 	 * </code>
 	 * The URL to be leeched can be set or changed by using this method.
 	 * This can be called as many time if multiple url's need to be leeched.
 	 * <code>
 	 * foreach($array_of_train_no as $tno) {
-	 * 	$leech_obj->seturl("http://example.com/page.php?train_no=".$tno);
+	 * 	$leech_obj->set_url("http://example.com/page.php?train_no=".$tno);
 	 * 	$result[$tno] = $leech_obj->leech();
 	 * }
 	 * </code>
@@ -222,7 +222,7 @@ class Leech {
 	 * @param String $url Url to be leeched
 	 * @return void
 	 */
-	public function seturl($url) {
+	public function set_url($url) {
 		$this->url = $url;
 	}
 	
@@ -234,8 +234,8 @@ class Leech {
 	 * Use setreferer to set the referer url. 
 	 * 
 	 * <code>
-	 * $leech_obj->seturl("http://example.com/page.php");
-	 * $leech_obj->setreferer("http://example.com/anotherpage.php");
+	 * $leech_obj->set_url("http://example.com/page.php");
+	 * $leech_obj->set_referer("http://example.com/anotherpage.php");
 	 * </code>
 	 * 
 	 * The above snippet will leech page.php as the request following from 
@@ -244,7 +244,7 @@ class Leech {
 	 * @param String $referer Referer url
 	 * @return void
 	 */
-	public function setreferer($referer) {
+	public function set_referer($referer) {
 		$this->referer = $referer;
 	}
 	
@@ -260,7 +260,7 @@ class Leech {
 	 * 	'Accept-Encoding: gzip,deflate,sdch',
 	 * 	'Content-length: 100'
 	 * );
-	 * $leech_obj->setheader($header);
+	 * $leech_obj->set_header($header);
 	 * $leech_obj->leech();
 	 * </code>
 	 * 
@@ -276,7 +276,7 @@ class Leech {
 	 * @param Array $header Additional Headers
 	 * @return void
 	 */
-	public function setheader($header) {
+	public function set_header($header) {
 		$this->header = $header;
 	}
 	
@@ -289,15 +289,15 @@ class Leech {
 	 * 
 	 * <code>
 	 * //request 1
-	 * $ua = $leech_obj->setua(Leech::UA_SAFARI);
+	 * $ua = $leech_obj->set_ua(Leech::UA_SAFARI);
 	 * $result[] = $leech_obj->leech();
 	 * 
 	 * //request 2
-	 * $ua = $leech_obj->setua(Leech::UA_CHROME);
+	 * $ua = $leech_obj->set_ua(Leech::UA_CHROME);
 	 * $result[] = $leech_obj->leech();
 	 * 
 	 * //request 3
-	 * $ua = $leech_obj->setua(Leech::UA_RANDOM);
+	 * $ua = $leech_obj->set_ua(Leech::UA_RANDOM);
 	 * $result[] = $leech_obj->leech();
 	 * </code>
 	 * 
@@ -310,7 +310,7 @@ class Leech {
 	 * 
 	 * Custom user agent can be used by
 	 * <code>
-	 * $leech_obj->setua("Custom UserAgent String (version 1.0)");
+	 * $leech_obj->set_ua("Custom UserAgent String (version 1.0)");
 	 * $result = $leech_obj->leech();
 	 * </code>
 	 * 
@@ -320,11 +320,11 @@ class Leech {
 	 * @param String|Integer $ua Class constants or UA String
 	 * @return String User Agent assinged for the current request
 	 */
-	public function setua($ua) {
+	public function set_ua($ua) {
 		if(is_int($ua))
 			switch($ua) {
 				case self::UA_RANDOM:
-				$this->setua(rand(1,6));
+				$this->set_ua(rand(1,6));
 				break;
 				
 				case self::UA_FIREFOX:
@@ -352,7 +352,7 @@ class Leech {
 				break;
 				
 				default:
-				$this->setua(rand(1,6));
+				$this->set_ua(rand(1,6));
 			}
 		else
 			$this->ua = $ua;
@@ -366,7 +366,7 @@ class Leech {
 	 * to assign the value to the post fields and use the second paramenter
 	 * to choose between the post type. UrlEncode or Formdata
 	 * 
-	 * Note Passing an array to setpost() will encode the data as 
+	 * Note Passing an array to set_post() will encode the data as 
 	 * multipart/form-data, setting the optional parameter true will encode 
 	 * the data as application/x-www-form-urlencoded.
 	 * 
@@ -376,7 +376,7 @@ class Leech {
 	 * 	"train_no" => $tno, 
 	 * 	"date" => $date
 	 * );
-	 * $leech_obj->setpost($post);
+	 * $leech_obj->set_post($post);
 	 * </code>
 	 * 
 	 * The above request will be sent with "Content-Type: multipart/form-data"
@@ -387,7 +387,7 @@ class Leech {
 	 * 	"train_no" => $tno, 
 	 * 	"date" => $date
 	 * );
-	 * $leech_obj->setpost($post, TRUE);
+	 * $leech_obj->set_post($post, TRUE);
 	 * </code>
 	 * 
 	 * The form data for the above example will be "train_no=$tno&date=$date".
@@ -397,8 +397,9 @@ class Leech {
 	 * request as urlencoded post.
 	 * @return void
 	 */
-	public function setpost($post, $urlencode = false) {
+	public function set_post($post, $urlencode = false) {
 		if($urlencode) {
+			$fields_string = "";
 			foreach($post as $key=>$value) {
 				$fields_string .= urlencode($key).'='.urlencode($value).'&';
 			}
@@ -414,7 +415,7 @@ class Leech {
 	 * to set how long your script should wait for the response. 
 	 * 
 	 * <code>
-	 * $leech_obj->settimeout(2);
+	 * $leech_obj->set_timeout(2);
 	 * </code>
 	 * 
 	 * The script will wait for only two seconds for the response.
@@ -422,7 +423,7 @@ class Leech {
 	 * @param Integer $timeout How long the script should wait in seconds.
 	 * @return void
 	 */
-	public function settimeout($timeout) {
+	public function set_timeout($timeout) {
 		$this->timeout = $timeout;
 	}
 	
@@ -432,7 +433,7 @@ class Leech {
 	 * This will allow user to set the cookie as a string for any request.
 	 * 
 	 * <code>
-	 * $leech_obj->setcookiestring("uid=123;sid=345;");
+	 * $leech_obj->set_cookie_string("uid=123;sid=345;");
 	 * </code>
 	 * 
 	 * The above snipet will send request with two cookies uid and sid.
@@ -440,7 +441,7 @@ class Leech {
 	 * @param String $cookie List of cookies seperated by ;
 	 * @return void
 	 */
-	public function setcookiestring($cookie) {
+	public function set_cookie_string($cookie) {
 		$this->cookie_string = $cookie;
 	}
 	
@@ -451,13 +452,13 @@ class Leech {
 	 * also change the cookies present in file.
 	 * 
 	 * <code>
-	 * $leech_obj->setcookiefile("cookies.txt");
+	 * $leech_obj->set_cookie_file("cookies.txt");
 	 * </code>
 	 * 
 	 * @param String $cookie Path to the cookie file;
 	 * @return void
 	 */
-	public function setcookiefile($cookie) {
+	public function set_cookie_file($cookie) {
 		$this->cookie_file = $cookie;
 	}
 	
@@ -489,7 +490,7 @@ class Leech {
 	 */
 	public function leech() {
 		if(is_null($this->ua))
-			$this->setua(self::UA_RANDOM);
+			$this->set_ua(self::UA_RANDOM);
 		
 		$ch = curl_init($this->url);
         curl_setopt($ch,CURLOPT_USERAGENT,$this->ua);
