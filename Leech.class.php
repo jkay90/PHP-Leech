@@ -75,6 +75,20 @@ class Leech {
 	private $timeout;
 	
 	/**
+	 * Cookie String
+	 * 
+	 * @var String
+	 */
+	private $cookie_string;
+	
+	/**
+	 * CookieJAR filepath
+	 * 
+	 * @var String
+	 */
+	private $cookie_file;
+	
+	/**
 	 * Flag - random UA
 	 * 
 	 * @const 0
@@ -399,11 +413,52 @@ class Leech {
 	 * The request will take server to process for some time. Use settimeout
 	 * to set how long your script should wait for the response. 
 	 * 
+	 * <code>
+	 * $leech_obj->settimeout(2);
+	 * </code>
+	 * 
+	 * The script will wait for only two seconds for the response.
+	 * 
 	 * @param Integer $timeout How long the script should wait in seconds.
 	 * @return void
 	 */
 	public function settimeout($timeout) {
 		$this->timeout = $timeout;
+	}
+	
+	/**
+	 * Setting Cookie String
+	 * 
+	 * This will allow user to set the cookie as a string for any request.
+	 * 
+	 * <code>
+	 * $leech_obj->setcookiestring("uid=123;sid=345;");
+	 * </code>
+	 * 
+	 * The above snipet will send request with two cookies uid and sid.
+	 * 
+	 * @param String $cookie List of cookies seperated by ;
+	 * @return void
+	 */
+	public function setcookiestring($cookie) {
+		$this->cookie_string = $cookie;
+	}
+	
+	/**
+	 * Setting Cookie File
+	 * 
+	 * This will allow user to set the cookie from a file. The response can 
+	 * also change the cookies present in file.
+	 * 
+	 * <code>
+	 * $leech_obj->setcookiefile("cookies.txt");
+	 * </code>
+	 * 
+	 * @param String $cookie Path to the cookie file;
+	 * @return void
+	 */
+	public function setcookiefile($cookie) {
+		$this->cookie_file = $cookie;
 	}
 	
 	/**
@@ -427,6 +482,8 @@ class Leech {
 	 * @link #setreferer Setting Referer
 	 * @link #setua Setting Useragent
 	 * @link #setheader Setting Additional Headers
+	 * @link #setcookiestring Setting Cookies from string
+	 * @link #setcookiefile Setting Cookies from a file.
 	 * 
 	 * @return String Response text as a string.
 	 */
@@ -445,6 +502,14 @@ class Leech {
 		
 		if(!is_null($this->header))
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $this->header);
+			
+		if(!is_null($this->cookie_string))
+			curl_setopt($ch, CURLOPT_COOKIE, $this->cookie_string);
+			
+		if(!is_null($this->cookie_file)) {
+			curl_setopt($ch, CURLOPT_COOKIEJAR, $this->cookie_file);
+			curl_setopt($ch, CURLOPT_COOKIEFILE, $this->cookie_file);
+		}
 		
 		curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
 		
